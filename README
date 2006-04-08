@@ -1,0 +1,25 @@
+MiniParser:
+	A simple C++ parser class with no external dependencies whatsoever
+	that can
+		- generate a parse tree from an expression
+			- parentheses
+			- constants
+			- symbolic variables
+			- binary operators:
+				- add: +
+				- subtract: -
+				- multiply: *
+				- divide: /
+				- exponent: ^, **
+			- unary operators:
+				- negate: -
+	NOTE: Order-of-operations is entirely left-associative.  Use
+	      parentheses everywhere!
+
+example:
+	An example command line application that demonstrates a class
+	with a predefined expression evaluated via operator()
+	as well as an expression with an arbitrary number of variables.
+	Can be called with two values (x,y) or with an expression followed
+	by an arbitrary number of values assigned to the letters of the
+	alphabet (a, b, c, ...).
