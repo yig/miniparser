@@ -1,5 +1,9 @@
+Author: Yotam Gingold <yotam@slackworks.com>
+Feedback: Invited!
+License: Public Domain.
+
 MiniParser:
-	A simple C++ parser class with no external dependencies whatsoever
+	A simple C++ expression parser with no external dependencies whatsoever
 	that can
 		- generate a parse tree from an expression
 			- parentheses
