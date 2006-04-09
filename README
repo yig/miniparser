@@ -1,4 +1,4 @@
-Author: Yotam Gingold <yotam@slackworks.com>
+Author: Yotam Gingold <yotam (strudel) slackworks.com>
 Feedback: Invited!
 License: Public Domain.
 
@@ -17,7 +17,7 @@ MiniParser:
 				- exponent: ^, **
 			- unary operators:
 				- negate: -
-	NOTE: Order-of-operations is entirely left-associative.  Use
+	NOTE: Order-of-operations is entirely left-associative.	 Use
 	      parentheses everywhere!
 
 example:
