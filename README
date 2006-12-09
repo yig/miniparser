@@ -23,8 +23,8 @@ MiniParser:
 				- log() (base 10)
 				- ln() (base e)
 				- sqrt()
-			- constants:
-				- pi (automatically defined variable)
+			- constants (override any variable with the same name):
+				- PI = 3.14...
 	NOTE: Order-of-operations is entirely left-associative.	 Use
 	      parentheses everywhere!
 

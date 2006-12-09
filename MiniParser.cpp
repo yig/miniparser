@@ -336,61 +336,61 @@ Node* ParseValueNode( MiniTokenizer& mt )
     }
     else if( t == "sin" )
     {
-    	if( mt.peek() != "(" )
-    	{
-    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
-    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
-    	}
-    	return new NodeSine( ParseValueNode( mt ) ) ;
+        if( mt.peek() != "(" )
+        {
+            std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+            return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+        }
+        return new NodeSine( ParseValueNode( mt ) ) ;
     }
     else if( t == "cos" )
     {
-    	if( mt.peek() != "(" )
-    	{
-    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
-    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
-    	}
-    	return new NodeCosine( ParseValueNode( mt ) ) ;
+        if( mt.peek() != "(" )
+        {
+            std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+            return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+        }
+        return new NodeCosine( ParseValueNode( mt ) ) ;
     }
     else if( t == "log" )
     {
-    	if( mt.peek() != "(" )
-    	{
-    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
-    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
-    	}
-    	return new NodeLog( ParseValueNode( mt ) ) ;
+        if( mt.peek() != "(" )
+        {
+            std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+            return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+        }
+        return new NodeLog( ParseValueNode( mt ) ) ;
     }
     else if( t == "ln" )
     {
-    	if( mt.peek() != "(" )
-    	{
-    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
-    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
-    	}
-    	return new NodeLN( ParseValueNode( mt ) ) ;
+        if( mt.peek() != "(" )
+        {
+            std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+            return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+        }
+        return new NodeLN( ParseValueNode( mt ) ) ;
     }
     else if( t == "exp" )
     {
-    	if( mt.peek() != "(" )
-    	{
-    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
-    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
-    	}
-    	return new NodeExp( ParseValueNode( mt ) ) ;
+        if( mt.peek() != "(" )
+        {
+            std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+            return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+        }
+        return new NodeExp( ParseValueNode( mt ) ) ;
     }
     else if( t == "sqrt" )
     {
-    	if( mt.peek() != "(" )
-    	{
-    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
-    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
-    	}
-    	return new NodeSqrt( ParseValueNode( mt ) ) ;
+        if( mt.peek() != "(" )
+        {
+            std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+            return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+        }
+        return new NodeSqrt( ParseValueNode( mt ) ) ;
     }
-    else if( t == "pi" )
+    else if( t == "PI" )
     {
-    	return new NodeConstantValue( M_PI ) ;
+        return new NodeConstantValue( M_PI ) ;
     }
     else
     {
@@ -473,9 +473,9 @@ const
         return 0. ;
     }
     
-    if( ids.count( "pi" ) )
+    if( ids.count( "PI" ) )
     {
-    	std::cerr << "Warning: pi is a built-in constant; the value passed in the IDMap will be ignored." << std::endl ;
+        std::cerr << "Warning: PI is a built-in constant; the value passed in the IDMap will be ignored." << std::endl ;
     }
     
     return mParseTree->eval( ids ) ;
