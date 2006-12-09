@@ -17,6 +17,14 @@ MiniParser:
 				- exponent: ^, **
 			- unary operators:
 				- negate: -
+			- functions:
+				- sin()
+				- cos()
+				- log() (base 10)
+				- ln() (base e)
+				- sqrt()
+			- constants:
+				- pi (automatically defined variable)
 	NOTE: Order-of-operations is entirely left-associative.	 Use
 	      parentheses everywhere!
 

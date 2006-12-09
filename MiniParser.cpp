@@ -473,5 +473,10 @@ const
         return 0. ;
     }
     
+    if( ids.count( "pi" ) )
+    {
+    	std::cerr << "Warning: pi is a built-in constant; the value passed in the IDMap will be ignored." << std::endl ;
+    }
+    
     return mParseTree->eval( ids ) ;
 }
