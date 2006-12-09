@@ -1,5 +1,14 @@
 #include "MiniParser.hpp"
 
+/*
+Version History:
+	- 2006-04-08
+		initial release
+	- 2006-12-09:
+		added math functions (sin, cos, log, ln, exp, sqrt) and constants (PI)
+		improved error handling (removed an infinite loop)
+*/
+
 #include <iostream>
 #include <sstream>
 #include <map>

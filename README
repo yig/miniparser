@@ -22,6 +22,7 @@ MiniParser:
 				- cos()
 				- log() (base 10)
 				- ln() (base e)
+				- exp()
 				- sqrt()
 			- constants (override any variable with the same name):
 				- PI = 3.14...
@@ -35,3 +36,11 @@ example:
 	Can be called with two values (x,y) or with an expression followed
 	by an arbitrary number of values assigned to the letters of the
 	alphabet (a, b, c, ...).
+
+
+Version History:
+	- 2006-04-08
+		initial release
+	- 2006-12-09:
+		added math functions (sin, cos, log, ln, exp, sqrt) and constants (PI)
+		improved error handling (removed an infinite loop)
