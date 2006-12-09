@@ -58,7 +58,7 @@ public:
         if( ids.end() == var )
         {
             std::cerr << "unknown variable: " << mVar << std::endl ;
-            return -1. ;
+            return 0. ;
         }
         return var->second ;
     }
@@ -156,6 +156,90 @@ public:
 private:
     Node* mNode ;
 };
+class NodeSine : public Node
+{
+public:
+    NodeSine( Node* node ) : mNode( node ) { assert( node ) ; }
+    ~NodeSine() { delete mNode ; }
+    
+    real eval( const IDMap& ids ) const
+    {
+        return sin( mNode->eval( ids ) ) ;
+    }
+    
+private:
+    Node* mNode ;
+};
+class NodeCosine : public Node
+{
+public:
+    NodeCosine( Node* node ) : mNode( node ) { assert( node ) ; }
+    ~NodeCosine() { delete mNode ; }
+    
+    real eval( const IDMap& ids ) const
+    {
+        return cos( mNode->eval( ids ) ) ;
+    }
+    
+private:
+    Node* mNode ;
+};
+class NodeLog : public Node
+{
+public:
+    NodeLog( Node* node ) : mNode( node ) { assert( node ) ; }
+    ~NodeLog() { delete mNode ; }
+    
+    real eval( const IDMap& ids ) const
+    {
+        return log10( mNode->eval( ids ) ) ;
+    }
+    
+private:
+    Node* mNode ;
+};
+class NodeLN : public Node
+{
+public:
+    NodeLN( Node* node ) : mNode( node ) { assert( node ) ; }
+    ~NodeLN() { delete mNode ; }
+    
+    real eval( const IDMap& ids ) const
+    {
+        return log( mNode->eval( ids ) ) ;
+    }
+    
+private:
+    Node* mNode ;
+};
+class NodeExp : public Node
+{
+public:
+    NodeExp( Node* node ) : mNode( node ) { assert( node ) ; }
+    ~NodeExp() { delete mNode ; }
+    
+    real eval( const IDMap& ids ) const
+    {
+        return exp( mNode->eval( ids ) ) ;
+    }
+    
+private:
+    Node* mNode ;
+};
+class NodeSqrt : public Node
+{
+public:
+    NodeSqrt( Node* node ) : mNode( node ) { assert( node ) ; }
+    ~NodeSqrt() { delete mNode ; }
+    
+    real eval( const IDMap& ids ) const
+    {
+        return sqrt( mNode->eval( ids ) ) ;
+    }
+    
+private:
+    Node* mNode ;
+};
 
 class MiniTokenizer
 {
@@ -215,7 +299,7 @@ Node* ParseValueNode( MiniTokenizer& mt )
     if( t.size() == 0 )
     {
         std::cerr << "expression cut short" << std::endl ;
-        return new NodeConstantValue( -1. ) ;
+        return new NodeConstantValue( 0. ) ;
     }
     
     assert( t.size() > 0 ) ;
@@ -227,15 +311,15 @@ Node* ParseValueNode( MiniTokenizer& mt )
         {
             std::cerr << "expression error: expected \")\"" << std::endl ;
             delete result ;
-            return new NodeConstantValue( -1. ) ;
+            return new NodeConstantValue( 0. ) ;
         }
         return result ;
     }
-    else if( t[0] == '-' )
+    else if( t == "-" )
     {
         return new NodeNegate( ParseValueNode( mt ) ) ;
     }
-    else if( t[0] >= '0' && t[0] <= '9' )
+    else if( t[0] == '.' || (t[0] >= '0' && t[0] <= '9') )
     {
         std::istringstream ttof( t ) ;
         real val ;
@@ -243,12 +327,70 @@ Node* ParseValueNode( MiniTokenizer& mt )
         if( !ttof )
         {
             std::cerr << "expecting a real number but received: " << t << std::endl ;
-            return new NodeConstantValue( -1. ) ;
+            return new NodeConstantValue( 0. ) ;
         }
         else
         {
             return new NodeConstantValue( val ) ;
         }
+    }
+    else if( t == "sin" )
+    {
+    	if( mt.peek() != "(" )
+    	{
+    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+    	}
+    	return new NodeSine( ParseValueNode( mt ) ) ;
+    }
+    else if( t == "cos" )
+    {
+    	if( mt.peek() != "(" )
+    	{
+    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+    	}
+    	return new NodeCosine( ParseValueNode( mt ) ) ;
+    }
+    else if( t == "log" )
+    {
+    	if( mt.peek() != "(" )
+    	{
+    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+    	}
+    	return new NodeLog( ParseValueNode( mt ) ) ;
+    }
+    else if( t == "ln" )
+    {
+    	if( mt.peek() != "(" )
+    	{
+    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+    	}
+    	return new NodeLN( ParseValueNode( mt ) ) ;
+    }
+    else if( t == "exp" )
+    {
+    	if( mt.peek() != "(" )
+    	{
+    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+    	}
+    	return new NodeExp( ParseValueNode( mt ) ) ;
+    }
+    else if( t == "sqrt" )
+    {
+    	if( mt.peek() != "(" )
+    	{
+    		std::cerr << "built-in function " << t << " must be followed by parentheses." << std::endl ;
+    		return new NodePlus( new NodeConstantValue( 0. ), ParseExpressionNode( mt ) ) ;
+    	}
+    	return new NodeSqrt( ParseValueNode( mt ) ) ;
+    }
+    else if( t == "pi" )
+    {
+    	return new NodeConstantValue( M_PI ) ;
     }
     else
     {
@@ -263,6 +405,14 @@ Node* ParseExpressionNode( MiniTokenizer& mt )
     if( mt.peek() == ")" ) return lhs ;
     
     std::string op = mt.eat() ;
+    // error: prematurely expression end
+    if( op.size() == 0 )
+    {
+        std::cerr << "expression cut short" << std::endl ;
+        delete lhs ;
+        return new NodeConstantValue( 0. ) ;
+    }
+    
     Node* rhs = ParseExpressionNode( mt ) ;
     
     if( op == "+" )
@@ -289,20 +439,13 @@ Node* ParseExpressionNode( MiniTokenizer& mt )
     {
         return new NodePow( lhs, rhs ) ;
     }
-    // errors
-    else if( op.size() == 0 )
-    {
-        std::cerr << "expression cut short" << std::endl ;
-        delete lhs ;
-        delete rhs ;
-        return new NodeConstantValue( -1. ) ;
-    }
+    // error: unknown
     else
     {
         std::cerr << "unknown operation: " << op << std::endl ;
         delete lhs ;
         delete rhs ;
-        return new NodeConstantValue( -1. ) ;
+        return new NodeConstantValue( 0. ) ;
     }
 }
 
@@ -327,7 +470,7 @@ const
     if( !mParseTree )
     {
         std::cerr << "No parse tree!" << std::endl ;
-        return -1. ;
+        return 0. ;
     }
     
     return mParseTree->eval( ids ) ;
