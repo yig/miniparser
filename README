@@ -44,3 +44,5 @@ Version History:
 	- 2006-12-09:
 		added math functions (sin, cos, log, ln, exp, sqrt) and constants (PI)
 		improved error handling (removed an infinite loop)
+	- 2007-04-23:
+		made the grammar left associative to match natural arithmetic and C

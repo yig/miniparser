@@ -7,12 +7,15 @@ Version History:
 	- 2006-12-09:
 		added math functions (sin, cos, log, ln, exp, sqrt) and constants (PI)
 		improved error handling (removed an infinite loop)
+	- 2007-04-23:
+		made the grammar left associative to match natural arithmetic and C
 */
 
 #include <iostream>
 #include <sstream>
 #include <map>
 #include <cmath>
+#include <cassert>
 
 namespace
 {
@@ -407,23 +410,8 @@ Node* ParseValueNode( MiniTokenizer& mt )
     }
 }
 
-Node* ParseExpressionNode( MiniTokenizer& mt )
+Node* MakeOperationNode( const std::string& op, Node* lhs, Node* rhs )
 {
-    Node* lhs = ParseValueNode( mt ) ;
-    // short circuit if we're a single value
-    if( mt.peek() == ")" ) return lhs ;
-    
-    std::string op = mt.eat() ;
-    // error: prematurely expression end
-    if( op.size() == 0 )
-    {
-        std::cerr << "expression cut short" << std::endl ;
-        delete lhs ;
-        return new NodeConstantValue( 0. ) ;
-    }
-    
-    Node* rhs = ParseExpressionNode( mt ) ;
-    
     if( op == "+" )
     {
         return new NodePlus( lhs, rhs ) ;
@@ -456,6 +444,54 @@ Node* ParseExpressionNode( MiniTokenizer& mt )
         delete rhs ;
         return new NodeConstantValue( 0. ) ;
     }
+}
+
+Node* ParseExpressionNode_RightAssociative( MiniTokenizer& mt )
+{
+    Node* lhs = ParseValueNode( mt ) ;
+    // short circuit if we're a single value
+    if( mt.peek() == ")" ) return lhs ;
+    
+    std::string op = mt.eat() ;
+    // error: prematurely expression end
+    if( op.size() == 0 )
+    {
+        std::cerr << "expression cut short" << std::endl ;
+        delete lhs ;
+        return new NodeConstantValue( 0. ) ;
+    }
+    
+    Node* rhs = ParseExpressionNode( mt ) ;
+    
+    return MakeOperationNode( op, lhs, rhs );
+}
+Node* ParseExpressionNode_LeftAssociative( MiniTokenizer& mt )
+{
+    Node* lhs = ParseValueNode( mt ) ;
+    
+    // short circuit when we reach the right parenthesis
+    while( mt.peek() != ")" )
+    {
+        std::string op = mt.eat() ;
+        // error: prematurely expression end
+        if( op.size() == 0 )
+        {
+            std::cerr << "expression cut short" << std::endl ;
+            delete lhs ;
+            return new NodeConstantValue( 0. ) ;
+        }
+        
+        Node* rhs = ParseValueNode( mt ) ;
+        
+        lhs = MakeOperationNode( op, lhs, rhs );
+    }
+    
+    return lhs ;
+}
+Node* ParseExpressionNode( MiniTokenizer& mt )
+{
+    // Most grammars are left associative (e.g. natural arithmetic, C).
+    return ParseExpressionNode_LeftAssociative( mt ) ;
 }
 
 } // ~unnamed namespace
