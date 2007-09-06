@@ -26,8 +26,8 @@ MiniParser:
 				- sqrt()
 			- constants (override any variable with the same name):
 				- PI = 3.14...
-	NOTE: Order-of-operations is entirely left-associative.	 Use
-	      parentheses everywhere!
+	NOTE: Order-of-operations is entirely left-associative.  There is no
+	      operator precedence.  Use parentheses everywhere!
 
 example:
 	An example command line application that demonstrates a class
