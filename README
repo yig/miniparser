@@ -14,6 +14,7 @@ MiniParser:
 				- subtract: -
 				- multiply: *
 				- divide: /
+				- modulus: %
 				- exponent: ^, **
 			- unary operators:
 				- negate: -
@@ -28,6 +29,9 @@ MiniParser:
 				- PI = 3.14...
 	NOTE: Order-of-operations is entirely left-associative.  There is no
 	      operator precedence.  Use parentheses everywhere!
+	TODO: Operator precedence can be added easily with several lines of
+	      find/replace in the function "Node* Parse( const std::string& str );"
+	      See http://en.wikipedia.org/wiki/Operator-precedence_parser#Alternatives_to_Dijkstra.27s_Algorithm
 
 example:
 	An example command line application that demonstrates a class
@@ -46,3 +50,6 @@ Version History:
 		improved error handling (removed an infinite loop)
 	- 2007-04-23:
 		made the grammar left associative to match natural arithmetic and C
+	- 2007-09-20:
+		added the modulus operator %.  attempted to add order-of-operations,
+		but was foiled by unary minus (e.g. -a).

@@ -139,6 +139,21 @@ private:
     Node* mLHS ;
     Node* mRHS ;
 };
+class NodeModulus : public Node
+{
+public:
+    NodeModulus( Node* lhs, Node* rhs ) : mLHS( lhs ), mRHS( rhs ) { assert( lhs && rhs ) ; }
+    ~NodeModulus() { delete mLHS ; delete mRHS ; }
+    
+    real eval( const IDMap& ids ) const
+    {
+        return fmod( mLHS->eval( ids ), mRHS->eval( ids ) ) ;
+    }
+    
+private:
+    Node* mLHS ;
+    Node* mRHS ;
+};
 class NodePow : public Node
 {
 public:
@@ -290,14 +305,71 @@ Node* ParseValueNode( MiniTokenizer& mt ) ;
 Node* Parse( const std::string& str )
 {
     std::string input = str ;
+    // Our simple tokenizer needs whitespace between all tokens.
     find_replace( input, "(", " ( " ) ;
     find_replace( input, ")", " ) " ) ;
     find_replace( input, "+", " + " ) ;
     find_replace( input, "-", " - " ) ;
     find_replace( input, "*", " * " ) ;
     find_replace( input, "/", " / " ) ;
+    find_replace( input, "%", " % " ) ;
     find_replace( input, "^", " ^ " ) ;
+    // The exponentiation operator "**" gets turned into "*  *" by the above
+    // find/replaces.  Turn it back into "**".
     find_replace( input, "*  *", "**" ) ;
+    
+    /*
+    // Operator precedence can be implemented with some parentheses.
+    // See: http://en.wikipedia.org/wiki/Operator-precedence_parser#Alternatives_to_Dijkstra.27s_Algorithm
+    // First in precedence is exponentiation.
+    find_replace( input, " ^ ", " ) ^ ( " );
+    find_replace( input, " ** ", " ) ** ( " );
+    // Then multiplication and division and modulus.
+    find_replace( input, " * ", " ) ) ) * ( ( ( " );
+    find_replace( input, " / ", " ) ) ) / ( ( ( " );
+    find_replace( input, " % ", " ) ) ) % ( ( ( " );
+    // Finally addition and subtraction.
+    find_replace( input, " + ", " ) ) ) ) + ( ( ( ( " );
+    // NOTE: Whoa, subtraction is complicated by its dual-use as unary minus, which has
+    //       precedence after exponentiation but before multiplication/division/modulus.
+    // find_replace( input, " - ", " ) ) ) ) - ( ( ( ( " );
+    {
+        std::string& in_this_string = input;
+        const std::string find( " - " );
+        const std::string replace1( " ) ) ) ) - ( ( ( ( " );
+        const std::string replace2( " 0 ) ) - ( ( " );
+        // const std::string replace2( " - " );
+        
+        std::string::size_type pos = 0 ;
+        while( std::string::npos != (pos = in_this_string.find( find, pos )) )
+        {
+            bool preceded_by_open_paren = true;
+            for( int i = pos-1; i >= 0; --i )
+            {
+                if( in_this_string[i] != ' ' && in_this_string[i] != '\r' && in_this_string[i] != '\n' && in_this_string[i] != '\t' && in_this_string[i] != '(' )
+                {
+                    preceded_by_open_paren = false;
+                    break;
+                }
+            }
+            
+            if( preceded_by_open_paren )
+            {
+                in_this_string.replace( pos, find.length(), replace2 ) ;
+                pos += replace2.length() ;
+            }
+            else
+            {
+                in_this_string.replace( pos, find.length(), replace1 ) ;
+                pos += replace1.length() ;
+            }
+        }
+    }
+    // We need to parse an expression surrounded by four parentheses.
+    std::istringstream istr( "( ( ( ( ( " + input + " ) ) ) ) )" ) ;
+    
+    std::cout << istr.str() << std::endl;
+    */
     
     std::istringstream istr( "( " + input + " )" ) ;
     MiniTokenizer tt( istr ) ;
@@ -427,6 +499,10 @@ Node* MakeOperationNode( const std::string& op, Node* lhs, Node* rhs )
     else if( op == "/" )
     {
         return new NodeDividedBy( lhs, rhs ) ;
+    }
+    else if( op == "%" )
+    {
+        return new NodeModulus( lhs, rhs ) ;
     }
     else if( op == "**" )
     {
