@@ -1,6 +1,7 @@
 Author: Yotam Gingold <yotam (strudel) yotamgingold.com>
-Feedback: Invited!
-License: Public Domain.
+License: Public Domain.  (I, Yotam Gingold, the author, release this code into the public domain.)
+Homepage: http://yotamgingold.com/code/
+GitHub: https://github.com/yig/miniparser
 
 MiniParser:
 	A simple C++ expression parser with no external dependencies whatsoever
