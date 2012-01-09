@@ -4,53 +4,53 @@ Homepage: http://yotamgingold.com/code/
 GitHub: https://github.com/yig/miniparser
 
 MiniParser:
-	A simple C++ expression parser with no external dependencies whatsoever
-	that can
-		- generate a parse tree from an expression
-			- parentheses
-			- constants
-			- symbolic variables
-			- binary operators:
-				- add: +
-				- subtract: -
-				- multiply: *
-				- divide: /
-				- modulus: %
-				- exponent: ^, **
-			- unary operators:
-				- negate: -
-			- functions:
-				- sin()
-				- cos()
-				- log() (base 10)
-				- ln() (base e)
-				- exp()
-				- sqrt()
-			- constants (override any variable with the same name):
-				- PI = 3.14...
-	NOTE: Order-of-operations is entirely left-associative.  There is no
-	      operator precedence.  Use parentheses everywhere!
-	TODO: Operator precedence can be added easily with several lines of
-	      find/replace in the function "Node* Parse( const std::string& str );"
-	      See http://en.wikipedia.org/wiki/Operator-precedence_parser#Alternatives_to_Dijkstra.27s_Algorithm
+    A simple C++ expression parser with no external dependencies whatsoever
+    that can
+        - generate a parse tree from an expression
+            - parentheses
+            - constants
+            - symbolic variables
+            - binary operators:
+                - add: +
+                - subtract: -
+                - multiply: *
+                - divide: /
+                - modulus: %
+                - exponent: ^, **
+            - unary operators:
+                - negate: -
+            - functions:
+                - sin()
+                - cos()
+                - log() (base 10)
+                - ln() (base e)
+                - exp()
+                - sqrt()
+            - constants (override any variable with the same name):
+                - PI = 3.14...
+    NOTE: Order-of-operations is entirely left-associative.  There is no
+          operator precedence.  Use parentheses everywhere!
+    TODO: Operator precedence can be added easily with several lines of
+          find/replace in the function "Node* Parse( const std::string& str );"
+          See http://en.wikipedia.org/wiki/Operator-precedence_parser#Alternatives_to_Dijkstra.27s_Algorithm
 
 example:
-	An example command line application that demonstrates a class
-	with a predefined expression evaluated via operator()
-	as well as an expression with an arbitrary number of variables.
-	Can be called with two values (x,y) or with an expression followed
-	by an arbitrary number of values assigned to the letters of the
-	alphabet (a, b, c, ...).
+    An example command line application that demonstrates a class
+    with a predefined expression evaluated via operator()
+    as well as an expression with an arbitrary number of variables.
+    Can be called with two values (x,y) or with an expression followed
+    by an arbitrary number of values assigned to the letters of the
+    alphabet (a, b, c, ...).
 
 
 Version History:
-	- 2006-04-08:
-		initial release
-	- 2006-12-09:
-		added math functions (sin, cos, log, ln, exp, sqrt) and constants (PI)
-		improved error handling (removed an infinite loop)
-	- 2007-04-23:
-		made the grammar left associative to match natural arithmetic and C
-	- 2007-09-20:
-		added the modulus operator %.  attempted to add order-of-operations,
-		but was foiled by unary minus (e.g. -a).
+    - 2006-04-08:
+        initial release
+    - 2006-12-09:
+        added math functions (sin, cos, log, ln, exp, sqrt) and constants (PI)
+        improved error handling (removed an infinite loop)
+    - 2007-04-23:
+        made the grammar left associative to match natural arithmetic and C
+    - 2007-09-20:
+        added the modulus operator %.  attempted to add order-of-operations,
+        but was foiled by unary minus (e.g. -a).
